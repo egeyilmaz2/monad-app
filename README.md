@@ -11,34 +11,20 @@ Bu proje, modüler bir mimari kullanarak geliştirilmiş bir backend ve frontend
 
 ## Kurulum ve Çalıştırma
 
-### Containersiz Ayaklandırma
-
-1. Proje kök dizinine gidin:
-
-    ```sh
-    cd my-modular-project
-    ```
-
-2. `start.sh` scriptini çalıştırarak backend ve frontend uygulamalarını ayaklandırın:
-
-    ```sh
-    chmod +x start.sh
-    ./start.sh
-    ```
 
 ### Docker ile Ayaklandırma
 
 1. Proje kök dizinine gidin:
 
     ```sh
-    cd my-modular-project
+    cd monad-app
     ```
 
-2. `start_containers.sh` scriptini çalıştırarak Docker container'larını ayaklandırın:
+2. `conteiner_ile_ayaklandır.sh` scriptini çalıştırarak Docker container'larını ayaklandırın:
 
     ```sh
-    chmod +x start_containers.sh
-    ./start_containers.sh
+    chmod +x conteiner_ile_ayaklandır.sh
+    ./conteiner_ile_ayaklandır.sh
     ```
 
 3. Uygulamaların çalıştığından emin olun:

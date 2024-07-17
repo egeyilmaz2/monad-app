@@ -2,18 +2,22 @@ package com.example.demo.models;
 
 import com.vaadin.flow.component.html.Div;
 
+
+import java.util.UUID;
+
+
+
 public class User {
+    private UUID id;
     private String firstName;
     private String lastName;
     private String tcNumber;
 
-    // Constructors, getters, and setters
-    public User(String ad, String soyAd, String tcNo) {
-        this.firstName = ad;
-        this.lastName = soyAd;
-        this.tcNumber = tcNo;
+    public User(String firstName, String lastName, String tcNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.tcNumber = tcNumber;
     }
-
     public String getFirstName() {
         return firstName;
     }
@@ -38,9 +42,18 @@ public class User {
         this.tcNumber = tcNumber;
     }
 
+
     public Div createCard() {
         Div card = new Div();
-        card.setText("Ad: " + firstName + ", SoyAd: " + lastName + ", Tc No: " + tcNumber);
+        card.setText(", Ad: " + firstName + ", SoyAd: " + lastName + ", Tc No: " + tcNumber);
         return card;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

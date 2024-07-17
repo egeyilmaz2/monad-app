@@ -7,11 +7,10 @@ import lombok.Setter;
 
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-import java.sql.Types;
 import java.util.UUID;
-
 
 @Entity
 @Table(name = "users")
@@ -21,8 +20,11 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JdbcTypeCode(Types.VARCHAR)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     @Column(name = "first_name", nullable = false)

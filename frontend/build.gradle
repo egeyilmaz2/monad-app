@@ -10,7 +10,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
-    id 'com.vaadin' version '24.4.4'
+    id 'com.vaadin' version '24.4.6'
 }
 
 repositories {
@@ -33,12 +33,16 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
 }
 
 dependencyManagement {
     imports {
-        mavenBom "com.vaadin:vaadin-bom:24.4.4"
+        mavenBom "com.vaadin:vaadin-bom:24.4.6"
     }
 }
 
-
+task buildDocker(type: Exec) {
+    dependsOn bootJar
+    commandLine 'docker', 'build', '-t', 'frontend-app:latest', '.'
+}

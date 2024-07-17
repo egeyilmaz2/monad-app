@@ -4,7 +4,6 @@ import com.example.demo.models.User;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -26,8 +25,7 @@ import java.util.List;
 @UIScope
 public class AddUserView extends VerticalLayout {
 
-    @Value("${backend.url}")
-    private String backendUrl;
+    private final String backendUrl= "http://localhost:4000/api/users";
 
     private List<User> users = new ArrayList<>();
     private Div userListLayout = new Div();
@@ -35,6 +33,7 @@ public class AddUserView extends VerticalLayout {
     private TextField lastNameField = new TextField("Soyad");
     private TextField tcNumberField = new TextField("TC Kimlik Numarası");
     private Button addButton = new Button("Ekle");
+    private Button refreshButton = new Button("Yenile");
     private User editingUser = null;
 
     public AddUserView() {
@@ -48,12 +47,13 @@ public class AddUserView extends VerticalLayout {
         lastNameField.setWidthFull();
         tcNumberField.setWidthFull();
 
-        formLayout.add(firstNameField, lastNameField, tcNumberField, addButton);
+        formLayout.add(firstNameField, lastNameField, tcNumberField, addButton, refreshButton);
         formLayout.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0", 1),
                 new FormLayout.ResponsiveStep("500px", 2)
         );
-        formLayout.setColspan(addButton, 2);
+        formLayout.setColspan(addButton, 1);
+        formLayout.setColspan(refreshButton, 1);
 
         addButton.addClickListener(e -> {
             String firstName = firstNameField.getValue();
@@ -68,7 +68,7 @@ public class AddUserView extends VerticalLayout {
                         saveUserToBackend(user);
                         Notification.show("Kullanıcı eklendi!");
                     } catch (Exception ex) {
-                        Notification.show("Kullanıcı yerel olarak eklendi. Backend'e kaydedilemedi.");
+                        System.out.println();
                     }
                 } else {
                     editingUser.setFirstName(firstName);
@@ -78,7 +78,7 @@ public class AddUserView extends VerticalLayout {
                         saveUserToBackend(editingUser);
                         Notification.show("Kullanıcı güncellendi!");
                     } catch (Exception ex) {
-                        Notification.show("Kullanıcı yerel olarak güncellendi. Backend'e kaydedilemedi.");
+                        System.out.println();
                     }
                     editingUser = null;
                     addButton.setText("Ekle");
@@ -93,12 +93,13 @@ public class AddUserView extends VerticalLayout {
             }
         });
 
+        refreshButton.addClickListener(e -> loadUsersFromBackend());
+
         userListLayout.addClassName("user-list-layout");
 
         add(formLayout, userListLayout);
 
         loadUsersFromBackend();
-        displayUsers();
     }
 
     private void displayUsers() {
@@ -128,7 +129,7 @@ public class AddUserView extends VerticalLayout {
             firstNameField.setValue(user.getFirstName());
             lastNameField.setValue(user.getLastName());
             tcNumberField.setValue(user.getTcNumber());
-            editingUser = user; 
+            editingUser = user;
             addButton.setText("Düzenlemeyi Bitir");
         });
 
@@ -139,7 +140,7 @@ public class AddUserView extends VerticalLayout {
                 deleteUserFromBackend(user);
                 Notification.show("Kullanıcı silindi!");
             } catch (Exception ex) {
-                Notification.show("Kullanıcı yerel olarak silindi. Backend'den silinemedi.");
+                System.out.println();
             }
             displayUsers();
         });
@@ -157,7 +158,7 @@ public class AddUserView extends VerticalLayout {
 
     private void deleteUserFromBackend(User user) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(backendUrl + "/" + user.getTcNumber());
+        restTemplate.delete(backendUrl + "/" + user.getId());
     }
 
     private void loadUsersFromBackend() {
@@ -165,10 +166,12 @@ public class AddUserView extends VerticalLayout {
             RestTemplate restTemplate = new RestTemplate();
             User[] usersArray = restTemplate.getForObject(backendUrl, User[].class);
             if (usersArray != null) {
+                users.clear();
                 users.addAll(Arrays.asList(usersArray));
+                displayUsers();
             }
         } catch (Exception ex) {
-            Notification.show("Backend'den kullanıcılar yüklenemedi.");
+            System.out.println();
         }
     }
 }

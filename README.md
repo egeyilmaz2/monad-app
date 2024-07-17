@@ -10,7 +10,19 @@ Bu proje, modüler bir mimari kullanarak geliştirilmiş bir backend ve frontend
 - [Docker Compose](https://docs.docker.com/compose/)
 
 ## Kurulum ve Çalıştırma
+### Docker kullanmadan Ayaklandırma
+1. Proje kök dizinine gidin:
 
+    ```sh
+    cd monad-app
+    ```
+
+2. `conteiner_ile_ayaklandır.sh` scriptini çalıştırarak Docker container'larını ayaklandırın:
+
+    ```sh
+    chmod +x dev_ortamı_ayakalndırma.sh
+    ./dev_ortamı_ayakalndırma.sh
+    ```
 
 ### Docker ile Ayaklandırma
 

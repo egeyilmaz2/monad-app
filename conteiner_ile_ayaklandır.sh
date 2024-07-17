@@ -7,6 +7,13 @@ then
     exit 1
 fi
 
+# Docker Compose'un yüklü olup olmadığını kontrol et
+if ! command -v docker-compose &> /dev/null
+then
+    echo "Docker Compose yüklü değil. Lütfen Docker Compose'u indirip kurun."
+    exit 1
+fi
+
 # Backend ve Frontend image'larının mevcut olup olmadığını kontrol et
 backend_image_exists=$(docker images -q backend-app:latest)
 frontend_image_exists=$(docker images -q frontend-app:latest)
@@ -22,12 +29,13 @@ else
     echo "Backend image zaten mevcut."
 fi
 
-# Eğer frontend image mevcut değilse, frontend'i build et ve image oluştur
+# Eğer frontend image mevcut değilse, frontend'i build et ve Docker image oluştur
 if [ -z "$frontend_image_exists" ]; then
     echo "Frontend image bulunamadı. Frontend'i build ediyor ve Docker image oluşturuyor..."
     cd frontend
-    ./gradlew clean build
-    docker build -t frontend-app:latest .
+    ./gradlew clean 
+	echo "Docker image oluşturuluyor..."
+    docker build -t frontend-app:latest . --progress=plain
     cd ..
 else
     echo "Frontend image zaten mevcut."
@@ -40,6 +48,8 @@ docker save frontend-app:latest -o devops/images/frontend-app.tar
 
 # Docker Compose ile container'ları başlat
 echo "Docker Compose ile container'ları başlatıyor..."
-docker-compose up -d
+cd devops
+docker-compose down
+docker-compose up --build -d
 
 echo "Frontend ve Backend Docker container'ları başlatıldı."

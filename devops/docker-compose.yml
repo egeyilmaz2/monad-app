@@ -1,30 +1,6 @@
 version: '3.8'
 
 services:
-  backend:
-    image: backend-app:latest
-    build:
-      context: ./backend/main-app
-    ports:
-      - "4000:4000"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/mydatabase
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-    networks:
-      - app-network
-    depends_on:
-      - db
-
-  frontend:
-    image: frontend-app:latest
-    build:
-      context: ./frontend
-    ports:
-      - "4001:4001"
-    networks:
-      - app-network
-
   db:
     image: postgres:latest
     environment:
@@ -33,6 +9,31 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend/main-app
+    image: backend-app:latest
+    ports:
+      - "4000:4000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../frontend/Dockerfile
+    image: frontend-app:latest
+    ports:
+      - "4001:4001"
     networks:
       - app-network
 

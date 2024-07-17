@@ -1,0 +1,61 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.1'
+	id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.monad'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation project(':service-api')
+	implementation project(':service-impl')
+	implementation project(':repository-api')
+	implementation project(':repository-impl')
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.hibernate.orm:hibernate-core:6.2.0.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+task cleanAll(type: Delete) {
+	dependsOn ':service-impl:clean'
+	dependsOn ':service-api:clean'
+	dependsOn ':repository-api:clean'
+	delete rootProject.buildDir
+}
+
+clean.dependsOn cleanAll
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
+task buildDocker(type: Exec) {
+    dependsOn bootJar
+    commandLine 'docker', 'build', '-t', 'backend-app:latest', '.'
+}

@@ -1,0 +1,5 @@
+rootProject.name = 'repository-impl'
+
+include 'repository-api'
+
+project(':repository-api').projectDir = new File(settingsDir, '../repository-api')

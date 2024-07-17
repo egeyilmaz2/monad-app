@@ -1,0 +1,13 @@
+rootProject.name = 'main-app'
+
+
+include 'service-api'
+include 'service-impl'
+include 'repository-api'
+include 'repository-impl'
+
+
+project(':service-api').projectDir = new File(settingsDir, '../service-api')
+project(':service-impl').projectDir = new File(settingsDir, '../service-impl')
+project(':repository-api').projectDir = new File(settingsDir, '../repository-api')
+project(':repository-impl').projectDir = new File(settingsDir, '../repository-impl')

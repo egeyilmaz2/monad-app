@@ -1,0 +1,40 @@
+# Maven
+target/
+
+# Gradle
+.gradle
+build/
+out/
+!gradlew
+!gradlew.bat
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+gradle-app.setting
+
+# Intellij
+.idea
+*.iml
+*.ipr
+*.iws
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+*.class
+
+# VS Code
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Docker
+devops/images/

@@ -17,7 +17,7 @@ Bu proje, modüler bir mimari kullanarak geliştirilmiş bir backend ve frontend
     cd monad-app
     ```
 
-2. `conteiner_ile_ayaklandır.sh` scriptini çalıştırarak Docker container'larını ayaklandırın:
+2. `dev_ortamı_ayakalndırma.sh` scriptini çalıştırarak dev ortamı ayaklandırın
 
     ```sh
     chmod +x dev_ortamı_ayakalndırma.sh
